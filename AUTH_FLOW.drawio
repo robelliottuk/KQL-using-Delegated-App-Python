@@ -1,0 +1,356 @@
+<mxfile host="app.diagrams.net" modified="2026-03-23T00:00:00.000Z" agent="GitHub Copilot" version="24.7.17" editor="draw.io">
+  <diagram id="authFlow" name="Authentication Flow">
+    <mxGraphModel dx="1600" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1500" pageHeight="2950" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- ── Title ─────────────────────────────────────────────────────── -->
+        <mxCell id="title" value="Multi-Tenant KQL — Authentication Flow" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=18;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="160" y="6" width="820" height="36" as="geometry" />
+        </mxCell>
+
+        <!-- ── Phase 1 label ─────────────────────────────────────────────── -->
+        <mxCell id="ph1_label" value="PHASE 1 — Token Cache Setup" style="text;html=1;strokeColor=#d6b656;fillColor=#fffde7;align=left;verticalAlign=middle;fontStyle=1;fontSize=11;fontColor=#5d4037;" vertex="1" parent="1">
+          <mxGeometry x="40" y="130" width="280" height="28" as="geometry" />
+        </mxCell>
+
+        <!-- START -->
+        <mxCell id="n_start" value="Start" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="485" y="44" width="180" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- FORCE_FRESH_AUTH decision -->
+        <mxCell id="n_force" value="FORCE_FRESH_AUTH_EACH_RUN?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="452" y="144" width="246" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Delete cache file -->
+        <mxCell id="n_delete" value="Delete msal_token_cache.json" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="795" y="149" width="260" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Load token cache -->
+        <mxCell id="n_load" value="Load SerializableTokenCache into memory&#xa;(empty if FORCE mode or no cache file)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="437" y="304" width="276" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- ── Phase 2 label ─────────────────────────────────────────────── -->
+        <mxCell id="ph2_label" value="PHASE 2 — Initial SSO Login  (/organizations authority)" style="text;html=1;strokeColor=#82b366;fillColor=#e8f5e9;align=left;verticalAlign=middle;fontStyle=1;fontSize=11;fontColor=#2e7d32;" vertex="1" parent="1">
+          <mxGeometry x="40" y="434" width="380" height="28" as="geometry" />
+        </mxCell>
+
+        <!-- Create SSO PublicClientApp -->
+        <mxCell id="n_create_sso" value="Create PublicClientApplication&#xa;(authority = /organizations)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="437" y="454" width="276" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Cached SSO account? -->
+        <mxCell id="n_cached_q" value="Cached SSO account&#xa;in MSAL cache?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="452" y="582" width="246" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Use cached account -->
+        <mxCell id="n_use_cached" value="Use cached account&#xa;(no browser prompt)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="795" y="587" width="240" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Interactive browser login -->
+        <mxCell id="n_interactive" value="acquire_token_interactive()&#xa;Browser sign-in, port 8400&#xa;prompt = select_account" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="432" y="734" width="286" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Access token returned? -->
+        <mxCell id="n_token_q" value="Access token returned?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="452" y="886" width="246" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- SSO failure -->
+        <mxCell id="n_sso_error" value="Write sso_error.txt&#xa;SystemExit(1)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="795" y="891" width="240" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Extract username -->
+        <mxCell id="n_extract" value="Extract preferred_username&#xa;from id_token_claims" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="432" y="1040" width="286" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Save token cache -->
+        <mxCell id="n_save" value="Save token cache to disk&#xa;(skipped if FORCE mode)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="437" y="1170" width="276" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Set sso_username (merge point) -->
+        <mxCell id="n_username" value="Set  sso_username" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="462" y="1300" width="226" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- ── Phase 3 label ─────────────────────────────────────────────── -->
+        <mxCell id="ph3_label" value="PHASE 3 — Per-Tenant Token Acquisition  (repeats for each tenant)" style="text;html=1;strokeColor=#9673a6;fillColor=#f3e5f5;align=left;verticalAlign=middle;fontStyle=1;fontSize=11;fontColor=#4a148c;" vertex="1" parent="1">
+          <mxGeometry x="40" y="1384" width="420" height="28" as="geometry" />
+        </mxCell>
+
+        <!-- Tenant loop entry -->
+        <mxCell id="n_loop" value="For each tenant_id in TENANTS" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="416" y="1404" width="318" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Create tenant MSAL client -->
+        <mxCell id="n_create_tenant" value="Create PublicClientApplication&#xa;(authority = /{tenant_id})&#xa;Sharing same token_cache object" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="422" y="1536" width="306" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Find account in shared cache -->
+        <mxCell id="n_find" value="Find account in shared cache&#xa;(match sso_username + realm = tenant_id)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="422" y="1690" width="306" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- acquire_token_silent (first attempt) -->
+        <mxCell id="n_silent" value="acquire_token_silent()" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="455" y="1822" width="240" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- Token acquired? (first attempt) -->
+        <mxCell id="n_silent_q" value="Token acquired?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="452" y="1940" width="246" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- acquire_token_silent with force_refresh -->
+        <mxCell id="n_force_refresh" value="acquire_token_silent&#xa;(force_refresh = True)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="795" y="1940" width="250" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Token acquired? (second attempt) -->
+        <mxCell id="n_force_q" value="Token acquired?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="798" y="2074" width="240" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Auth error: no token -->
+        <mxCell id="n_err1" value="Write tenant auth_error file&#xa;Skip to next tenant" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="1120" y="2079" width="260" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Decode JWT -->
+        <mxCell id="n_decode" value="Decode JWT payload (Base64)&#xa;Read  tid  claim (without verifying signature)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="422" y="2214" width="306" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- tid == tenant_id? -->
+        <mxCell id="n_tid_q" value="tid == requested tenant_id?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="447" y="2348" width="256" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- tid mismatch error -->
+        <mxCell id="n_tid_err" value="Write auth_error file&#xa;(tid mismatch)&#xa;Skip to next tenant" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="795" y="2338" width="250" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Token validated -->
+        <mxCell id="n_auth_ok" value="Token validated for tenant&#xa;→ Proceed to KQL query" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="432" y="2502" width="286" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- More tenants? -->
+        <mxCell id="n_more_q" value="More tenants?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="452" y="2634" width="246" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- End -->
+        <mxCell id="n_end" value="Authentication phase complete" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="416" y="2794" width="318" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- ══════════════════════════════════════════════════════════════════
+             EDGES
+        ══════════════════════════════════════════════════════════════════════ -->
+
+        <!-- start → force -->
+        <mxCell id="e1" edge="1" parent="1" source="n_start" target="n_force" style="endArrow=block;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- force Yes → delete (right) -->
+        <mxCell id="e2" value="Yes" edge="1" parent="1" source="n_force" target="n_delete" style="endArrow=block;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- force No → load (down) -->
+        <mxCell id="e3" value="No" edge="1" parent="1" source="n_force" target="n_load" style="endArrow=block;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- delete → load (down then left via waypoint) -->
+        <mxCell id="e4" edge="1" parent="1" source="n_delete" target="n_load" style="endArrow=block;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="925" y="334" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- load → create_sso -->
+        <mxCell id="e5" edge="1" parent="1" source="n_load" target="n_create_sso" style="endArrow=block;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- create_sso → cached_q -->
+        <mxCell id="e6" edge="1" parent="1" source="n_create_sso" target="n_cached_q" style="endArrow=block;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- cached_q Yes → use_cached (right) -->
+        <mxCell id="e7" value="Yes" edge="1" parent="1" source="n_cached_q" target="n_use_cached" style="endArrow=block;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- cached_q No → interactive (down) -->
+        <mxCell id="e8" value="No" edge="1" parent="1" source="n_cached_q" target="n_interactive" style="endArrow=block;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- interactive → token_q -->
+        <mxCell id="e9" edge="1" parent="1" source="n_interactive" target="n_token_q" style="endArrow=block;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- token_q No → sso_error (right) -->
+        <mxCell id="e10" value="No" edge="1" parent="1" source="n_token_q" target="n_sso_error" style="endArrow=block;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- token_q Yes → extract (down) -->
+        <mxCell id="e11" value="Yes" edge="1" parent="1" source="n_token_q" target="n_extract" style="endArrow=block;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- extract → save -->
+        <mxCell id="e12" edge="1" parent="1" source="n_extract" target="n_save" style="endArrow=block;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- save → username -->
+        <mxCell id="e13" edge="1" parent="1" source="n_save" target="n_username" style="endArrow=block;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- use_cached → username (right-side bypass, skips interactive steps) -->
+        <mxCell id="e14" value="bypass interactive flow" edge="1" parent="1" source="n_use_cached" target="n_username" style="endArrow=block;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;dashed=1;fontSize=10;fontColor=#6c8ebf;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1080" y="617" />
+              <mxPoint x="1080" y="1325" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- username → loop -->
+        <mxCell id="e15" edge="1" parent="1" source="n_username" target="n_loop" style="endArrow=block;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- loop → create_tenant -->
+        <mxCell id="e16" edge="1" parent="1" source="n_loop" target="n_create_tenant" style="endArrow=block;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- create_tenant → find -->
+        <mxCell id="e17" edge="1" parent="1" source="n_create_tenant" target="n_find" style="endArrow=block;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- find → silent -->
+        <mxCell id="e18" edge="1" parent="1" source="n_find" target="n_silent" style="endArrow=block;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- silent → silent_q -->
+        <mxCell id="e19" edge="1" parent="1" source="n_silent" target="n_silent_q" style="endArrow=block;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- silent_q No → force_refresh (right) -->
+        <mxCell id="e20" value="No" edge="1" parent="1" source="n_silent_q" target="n_force_refresh" style="endArrow=block;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- force_refresh → force_q -->
+        <mxCell id="e21" edge="1" parent="1" source="n_force_refresh" target="n_force_q" style="endArrow=block;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- force_q No → err1 (right) -->
+        <mxCell id="e22" value="No" edge="1" parent="1" source="n_force_q" target="n_err1" style="endArrow=block;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- force_q Yes → decode (down then left via waypoint) -->
+        <mxCell id="e23" value="Yes" edge="1" parent="1" source="n_force_q" target="n_decode" style="endArrow=block;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="918" y="2244" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- silent_q Yes → decode (down) -->
+        <mxCell id="e24" value="Yes" edge="1" parent="1" source="n_silent_q" target="n_decode" style="endArrow=block;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- decode → tid_q -->
+        <mxCell id="e25" edge="1" parent="1" source="n_decode" target="n_tid_q" style="endArrow=block;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- tid_q Yes → auth_ok (down) -->
+        <mxCell id="e26" value="Yes" edge="1" parent="1" source="n_tid_q" target="n_auth_ok" style="endArrow=block;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- tid_q No → tid_err (right) -->
+        <mxCell id="e27" value="No" edge="1" parent="1" source="n_tid_q" target="n_tid_err" style="endArrow=block;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- auth_ok → more_q -->
+        <mxCell id="e28" edge="1" parent="1" source="n_auth_ok" target="n_more_q" style="endArrow=block;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- tid_err → more_q (down then left via waypoint) -->
+        <mxCell id="e29" edge="1" parent="1" source="n_tid_err" target="n_more_q" style="endArrow=block;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="920" y="2674" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- err1 → more_q (down then left via waypoint) -->
+        <mxCell id="e30" edge="1" parent="1" source="n_err1" target="n_more_q" style="endArrow=block;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1250" y="2674" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- more_q Yes → loop (left-side loop-back with waypoints) -->
+        <mxCell id="e31" value="Yes&#xa;(next tenant)" edge="1" parent="1" source="n_more_q" target="n_loop" style="endArrow=block;html=1;dashed=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=10;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="370" y="2674" />
+              <mxPoint x="370" y="1434" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- more_q No → end (down) -->
+        <mxCell id="e32" value="No" edge="1" parent="1" source="n_more_q" target="n_end" style="endArrow=block;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
