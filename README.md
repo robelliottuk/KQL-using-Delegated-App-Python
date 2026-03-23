@@ -1,6 +1,6 @@
-# Multi-Tenant Microsoft Graph KQL Runner
+# Multi-tenant KQL Queries using Delegated App
 
-This project runs a Microsoft Defender XDR Advanced Hunting KQL query across multiple Microsoft Entra tenants using one delegated user sign-in.
+This project contains a Python script which runs a Microsoft Defender XDR Advanced Hunting KQL query across multiple Microsoft Entra tenants using one delegated user sign-in.
 
 The script performs:
 
