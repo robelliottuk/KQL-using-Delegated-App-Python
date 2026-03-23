@@ -10,9 +10,11 @@ The script performs:
 - Query execution via Microsoft Graph `security/runHuntingQuery`.
 - Per-tenant output files plus a run summary.
 
-## File
+## Files
 
 - `multi-tenant KQL.py` - Main script.
+- `FLOW_DIAGRAM.md` - Mermaid flow diagram showing the app's end-to-end execution flow (renderable in VS Code, GitHub, and diagrams.net).
+- `FLOW_DIAGRAM.drawio` - Editable Draw.io version of the same flow diagram (open in [diagrams.net](https://app.diagrams.net) or the VS Code Draw.io extension).
 
 ## What It Does
 
