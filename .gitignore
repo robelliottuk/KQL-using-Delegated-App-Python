@@ -1,4 +1,58 @@
+########################################
+# PYTHON
+########################################
+
+# Virtual environments
+.venv/
+env/
+venv/
+
+# Bytecode
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Build / packaging
+build/
+dist/
+*.egg-info/
+
+########################################
+# POWERSHELL
+########################################
+
+# PowerShell cache
+*.ps1xml
+*.psc1
+
+########################################
+# VS CODE
+########################################
+
+.vscode/
+.history/
+
+########################################
+# DRAW.IO / DIAGRAMS
+########################################
+
+# Allow .drawio files (tracked)
+# Ignore autosave/backup files
+*.drawio.bkp
+*.drawio~*
+
+########################################
+# PROJECT-SPECIFIC IGNORES
+########################################
+
+# Ignore these two diagram files only
 FLOW_DIAGRAM.mmd
 FLOW_DIAGRAM.md
 
-.venv
+########################################
+# GIT
+########################################
+
+# Never ignore .gitignore itself
+!.gitignore
