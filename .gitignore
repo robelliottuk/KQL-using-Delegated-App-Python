@@ -1,0 +1,24 @@
+# Python cache/artifacts
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# IDE
+.vscode/
+
+# Local auth/cache artifacts
+msal_token_cache.json
+
+# Script output artifacts
+tenant_query_results/
+
+# OS files
+.DS_Store
+Thumbs.db
